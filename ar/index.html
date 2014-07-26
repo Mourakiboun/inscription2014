@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>سجل نفسك</title>
+<link rel="shortcut icon" href="../img/icon.png">
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.css' rel='stylesheet' />
+<link rel="stylesheet" media="screen" href="../css/styles.css"/>
+
+
+</head>
+<body>
+
+<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js'></script>
+<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
+<link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
+
+<script type="text/javascript" src="../js/circo.js"></script>
+
+
+<div id='map'></div>
+<a style="text-decoration:none;" href='#' id='geolocate' class='ui-button'><b>إضغط هنا</b>، لتحديد مكانك على الخريطة</a>
+<a style="text-decoration:none;" href="https://www.facebook.com/mourakiboun"><img src='../img/logo.png' id='logo'></a>
+
+<script>
+var geolocate = document.getElementById('geolocate');
+var map = L.mapbox.map('map','examples.map-i86nkdio',{attributionControl: false}).setView([ 36 , 10 ], 7);
+L.control.layers({  
+    "خارطة الطرقات": map.tileLayer,
+    "الأقمار الصناعية": L.mapbox.tileLayer("mehdi118218.iok998fb")
+}, null).addTo(map);
+
+var myLayer = L.mapbox.featureLayer().addTo(map);
+
+// Omnivore will AJAX-request this file behind the scenes and parse it:
+// note that there are considerations:
+// - The CSV file must contain latitude and longitude values, in column
+//   named roughly latitude and longitude
+// - The file must either be on the same domain as the page that requests it,
+//   or both the server it is requested from and the user's browser must
+//   support CORS.
+
+
+
+
+//var geojson = L.geoJson(circooo).addTo(map);
+
+
+
+var runLayer = omnivore.csv('../data/liste_24_07.csv')
+.on('ready', function(e) {
+    // The clusterGroup gets each marker in the group added to it
+    // once loaded, and then is added to the map
+    var clusterGroup = new L.MarkerClusterGroup({ showCoverageOnHover: false });
+    
+
+    e.target.eachLayer(function(layer) {
+
+    	layer.bindPopup('<div style="text-align:right; font-size:140%"> <h3>'+layer.feature.properties.CENTER_ID+ ' - '+layer.feature.properties.CENTER_AR+'</h3>'
+    		//+'<span dir="rtl">للتسجيل  <h4 style="text-align:center">*195*رقم بطاقة التعريف*' +layer.feature.properties.CENTER_ID + '#</h4></span><br />'  
+                +'<span dir="rtl">للتسجيل  :<h4>' +layer.feature.properties.CENTER_ID +'#'+ '*رقم بطاقة التعريف*195*</h4><br /></span>'
+				+'الدائرة الانتخابية : <b>' + layer.feature.properties.CIRCONSCRIPTION_AR + '</b><br />' 
+				+'المعتمدية : <b>'+ layer.feature.properties.DELEGATION_AR + '</b><br />'
+                +'العمادة : <b>'+ layer.feature.properties.SOUS_DELEGATION_AR + '</b><br />'
+				+'مركز الاقتراع : <b>'+ layer.feature.properties.CENTER_AR + '</b><br />'
+                +'الرمز : <b>'+ layer.feature.properties.CENTER_ID + '</b></div>')
+				;
+
+
+        clusterGroup.addLayer(layer);
+    });
+    map.addLayer(clusterGroup);
+});
+
+//map.attributionControl.addAttribution('Election data &copy; <a href="http://mourakiboun.org/">Mourakiboun</a>');
+
+
+
+//geolocate
+if (!navigator.geolocation) {
+    geolocate.innerHTML = 'Geolocation is not available';
+} else {
+    geolocate.onclick = function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        map.locate();
+    };
+}
+
+// Once we've got a position, zoom and center the map
+// on it, and add a single marker.
+map.on('locationfound', function(e) {
+    var opt = {
+                maxZoom : 16
+                };
+
+    map.fitBounds(e.bounds,opt);
+
+    myLayer.setGeoJSON({
+        type: 'Feature',
+        geometry: {
+            type: 'Point',
+            coordinates: [e.latlng.lng, e.latlng.lat]
+        },
+        properties: {
+            'title': '! أنت هنا',
+            'marker-color': '#ff8888',
+            'marker-symbol': 'star'
+        }
+    });
+
+    // And hide the geolocation button
+    geolocate.parentNode.removeChild(geolocate);
+});
+
+// If the user chooses not to allow their location
+// to be shared, display an error message.
+map.on('locationerror', function() {
+    geolocate.innerHTML = '! ليس بإمكاننا تحديد موقعك';
+});
+
+
+
+</script>
+
+</body>
+</html>

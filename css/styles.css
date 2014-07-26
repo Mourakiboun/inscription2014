@@ -1,0 +1,54 @@
+body { margin:0; padding:0; }
+  
+
+#map { position:absolute; top:0; bottom:0; width:100%; }
+#logo { position:absolute;  left:15px;bottom:20px; width:14%; height: 7%;text-align: center;}  
+#bg-img {position:fixed;top:0;left:0;width:100%;height:100%;}
+#popup {position:fixed;top:15%;left:15%;width:70%;height:70%;background:white;-moz-border-radius: 15px;border-radius: 15px;}
+#logo2 { position:absolute;  right:15px;bottom:20px; width:14%; height: 7%;text-align: center;}  
+#title-fr {text-align:center; font-size:3vmax;  color: #003375;}
+#title-ar {text-align:center; font-size:3vmax;  color: #003375;}
+
+
+
+.ui-button {
+  background:#003375;
+  color:#FFF;
+  display:block;
+  position:absolute;
+  top:10%;left:50%;
+  width:160px;
+  margin:-20px 0 0 -80px;
+  z-index:100;
+  text-align:center;
+  padding:10px;
+  border:1px solid rgba(0,0,0,0.4);
+  border-radius:13px;
+  }
+  .ui-button:hover {
+    background:#004094;
+    color:#fff;
+    }
+
+
+
+    .ui-button2 {
+  background:#003375;
+  color:#FFF;
+  z-index:100;
+  text-align:center;
+  padding:3px;
+  border:1px solid rgba(0,0,0,0.4);
+  border-radius:13px;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 8%;
+  display:inline-block;
+  width: 12%;
+  height: 7%;
+  font-size:2.2vmax;
+  }
+  .ui-button2:hover {
+    background:#004094;
+    color:#fff;
+    }
