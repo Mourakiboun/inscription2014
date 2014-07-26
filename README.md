@@ -1,0 +1,1 @@
+Locate yourself and find the USSD code and how to register in the closest polling center to you.
