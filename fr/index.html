@@ -57,7 +57,7 @@ function onEachFeature(feature, layer) {
                 +'Nombre de centres de vote' + feature.properties.needed + '</h4></div>');
     }
 }
-*/
+
 
 var myStyle = {
     "color": "#ff7800",
@@ -70,7 +70,7 @@ var geojson = L.geoJson(circooo, {
      style : myStyle
 }).addTo(map);
 
-
+*/
 
 var runLayer = omnivore.csv('../data/liste_24_07.csv')
 .on('ready', function(e) {
